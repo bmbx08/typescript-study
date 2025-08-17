@@ -38,7 +38,7 @@ function getTypeName(result:SearchResult){
     //radio타입을 지나친다.
     // else if(result.type==="radio") return "라디오"
     else{
-        exhaustiveCheck(result)
+        // exhaustiveCheck(result)
         return "결과"
     }
 }

@@ -36,7 +36,7 @@
 // //typeof는 원시타입(number, string, boolean, undefined)만 감지할 수 있다.(원사타입이 아니면 다 object라고만 반환한다.)
 
 
-//2. instanceof(object 감지 가능)
+//2. instanceof(object 감지 가능,하지만 javascript 내 내장된 기본 객체만 감지 가능(Date 등))
 // type Period = {
 //     start:string,
 //     end:string,
@@ -77,7 +77,7 @@ function isTrack(result:Track|Artist):result is Track{
 // function isTrack(result:Track|Artist):boolean{
 //     return (result as Track).title !== undefined
 // } 
-// 리턴 타입에 boolean으로 쓴다면 똑같은 결과값을 반환하지만, printInfo에서 result가 Track 타입인지 Artist 타입인지 구별을 못한다. -> 타입 오류가 남.
+// 리턴 타입에 boolean으로 써도 똑같은 결과값을 반환하지만, printInfo에서 result가 Track 타입인지 Artist 타입인지 구별을 못한다. -> result.title, result.name 등에서 타입 오류가 남.
 
 function isArtist(result:Track|Artist):result is Artist{
     return (result as Artist).name !== undefined
