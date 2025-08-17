@@ -1,29 +1,29 @@
-type Track = {
-    title:string,
-    releaseDate:string,
-}
+// type Track = {
+//     title:string,
+//     releaseDate:string,
+// }
 
-type Artist = {
-    name:string,
-    releaseDate:string,
-}
+// type Artist = {
+//     name:string,
+//     releaseDate:string,
+// }
 
-type SearchResult = Track | Artist
+// type SearchResult = Track | Artist
 
-interface SearchResponse {
-    searchResult: Track|Artist
-}
+// interface SearchResponse {
+//     searchResult: Track|Artist
+// }
 
-let results : SearchResult[] = [{title:"hello",releaseDate:"2024"},{name:"hello",releaseDate:"2025"}]
+// let results : SearchResult[] = [{title:"hello",releaseDate:"2024"},{name:"hello",releaseDate:"2025"}]
 
-function getName(result:Track|Artist){
-    // return result.name
-} //유니온 타입을 사용하면 이런 상황에서 에러가 날 수 있다.
-// name 속성은 Artist 타입에는 있지만, Track 타입에는 없다. -> 오류 발생
+// function getName(result:Track|Artist){
+//     // return result.name
+// } //유니온 타입을 사용하면 이런 상황에서 에러가 날 수 있다.
+// // name 속성은 Artist 타입에는 있지만, Track 타입에는 없다. -> 오류 발생
 
 
 //타입 좁히기
-// 1. typeof(number, string, boolean, undefined 등 원십타입ㅁ)
+// 1. typeof(number, string, boolean, undefined 등 원시타입만)
 // type SearchType=number|string;
 
 // function searchByKeyword(keyword:SearchType):string{
@@ -37,16 +37,58 @@ function getName(result:Track|Artist){
 
 
 //2. instanceof(object 감지 가능)
-type Period = {
-    start:string,
-    end:string,
+// type Period = {
+//     start:string,
+//     end:string,
+// }
+
+// type SearchType = Period | Date
+
+// function getDate(day:SearchType):Date{
+//     if(day instanceof Date) return day //Period는 자바스크립트의 고유 인스턴스가 아니기 때문에 Date대신에 Period를 넣을 수 없다.
+//     return new Date(day.start)
+// }
+
+// getDate({start:"2024-01-01",end:""})
+
+
+//3. in
+// type Track = {
+//     title:string,
+//     releaseDate:string,
+// }
+
+// type Artist = {
+//     name:string,
+//     releaseDate:string,
+// }
+
+// function getName(result:Track|Artist){
+//     if("title" in result) return result.title
+
+//     if("name" in result) return result.name
+// }
+
+//4. is(타입 가드 함수용)
+function isTrack(result:Track|Artist):result is Track{
+    return (result as Track).title !== undefined
 }
 
-type SearchType = Period | Date
+// function isTrack(result:Track|Artist):boolean{
+//     return (result as Track).title !== undefined
+// } 
+// 리턴 타입에 boolean으로 쓴다면 똑같은 결과값을 반환하지만, printInfo에서 result가 Track 타입인지 Artist 타입인지 구별을 못한다. -> 타입 오류가 남.
 
-function getDate(day:SearchType):Date{
-    if(day instanceof Date) return day //Period는 자바스크립트의 고유 인스턴스가 아니기 때문에 Date대신에 Period를 넣을 수 없다.
-    return new Date(day.start)
+function isArtist(result:Track|Artist):result is Artist{
+    return (result as Artist).name !== undefined
+}
+    
+function printInfo(result:Track|Artist){
+    if(isTrack(result)){
+        console.log(result.title)
+    }else if(isArtist(result)){
+        console.log(result.name)
+    }
 }
 
-getDate({start:"2024-01-01",end:""})
+
